@@ -388,7 +388,7 @@ async function sendSTT_old(wavFile, txtFile, duration) {
 }*/
 // Send content(string base64) to Google Speech To Text (GG STT)
 async function sendSTT(wavFile, txtFile, duration) {
-    mUtil.log("GG STT start");
+    mUtil.log("Voice Regconition Service Started!");
     if (!mFs.existsSync(wavFile)) {
         mUtil.log("%s does not exist", wavFile);
         return;
