@@ -25,7 +25,7 @@ $ext =~ s/\n//;
 my $ext1 = $hostname{$ext}."_".$datestamp;
 my $ext2 = $ext1.".txt";
 #clean old files
-my $remov_old_file_cmd = "rm $log_dir/captured_* *wav";
+my $remov_old_file_cmd = "rm $log_dir/captured_* $log_dir/*wav";
 
 my $pcap = "sudo tcpdump -G 300 -W 1 -i any -w $log_dir/captured_pkt_".$ext1.'.pcap > /dev/null';
 my $cpu = "sar $interval -u > $log_dir/captured_cpu_".$ext2;
