@@ -9,12 +9,13 @@ my %hostname = (
 "ip-172-31-45-123" => "Asterisk2",
 "ip-172-31-45-175" => "Asterisk3",
 );
-
+#my $log_dir = "/home/admin/statistic_log";
+my $log_dir = "/home/admin";
 my $sleep = 320 ;
 my $interval = 1;
 
 
-my $captured_sumary_report='/home/admin/captured_sumary';
+my $captured_sumary_report="$log_dir/captured_sumary";
 
 our ($sec,$min,$hour,$mday,$mon,$year,$wday, $yday,$isdst) = localtime(time);
 our $datestamp = sprintf "%4d%02d%02d-%02d%02d%02d", $year+1900,$mon+1,$mday,$hour,$min,$sec;
@@ -24,13 +25,13 @@ $ext =~ s/\n//;
 my $ext1 = $hostname{$ext}."_".$datestamp;
 my $ext2 = $ext1.".txt";
 #clean old files
-`sudo rm captured_* *wav`;
-my $pcap = 'sudo tcpdump -G 300 -W 1 -i any -w /home/admin/captured_pkt_'.$ext1.'.pcap > /dev/null';
-my $cpu = "sar $interval -u > /home/admin/captured_cpu_".$ext2;
-my $mem = "sar $interval -r > /home/admin/captured_mem_".$ext2;
-my $network = "sar $interval -n DEV > /home/admin/captured_network_".$ext2;
-my $disk = "sar $interval -d > /home/admin/captured_disk_".$ext2;
-#my $as_console = "sudo asterisk -rvvvvv > /home/admin/captured_console_".$ext2; hight cpu can not use
+`sudo rm $log_dir/captured_* *wav`;
+my $pcap = "sudo tcpdump -G 300 -W 1 -i any -w $log_dir/captured_pkt_".$ext1.'.pcap > /dev/null';
+my $cpu = "sar $interval -u > $log_dir/captured_cpu_".$ext2;
+my $mem = "sar $interval -r > $log_dir/captured_mem_".$ext2;
+my $network = "sar $interval -n DEV > $log_dir/captured_network_".$ext2;
+my $disk = "sar $interval -d > $log_dir/captured_disk_".$ext2;
+#my $as_console = "sudo asterisk -rvvvvv > $log_dir/captured_console_".$ext2; hight cpu can not use
 my $pcap_pid;
 my $memory_pid;
 print "$pcap"."\n";
@@ -53,9 +54,9 @@ foreach (@output){
         print "sudo kill $1\n";
     }
 }
-sumary_report("/home/admin/captured_cpu_$ext2","/home/admin/captured_mem_$ext2","/home/admin/captured_network_$ext2","/home/admin/captured_network_$ext2","/home/admin/captured_disk_$ext2");
+sumary_report("$log_dir/captured_cpu_$ext2","$log_dir/captured_mem_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_disk_$ext2");
 
-`sudo mv /var/spool/asterisk/monitor/*wav /home/admin/`;
+`sudo mv /var/spool/asterisk/monitor/*wav $log_dir/`;
 print 'Capture success!'."\n";
 
 
