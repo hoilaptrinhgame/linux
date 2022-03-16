@@ -9,12 +9,12 @@ my %hostname = (
 "ip-172-31-45-123" => "Asterisk2",
 "ip-172-31-45-175" => "Asterisk3",
 );
-exit(0);
+
 my $sleep = 320 ;
 my $interval = 1;
 
 
-my $captured_sumary_report='captured_sumary';
+my $captured_sumary_report='/home/admin/captured_sumary';
 
 our ($sec,$min,$hour,$mday,$mon,$year,$wday, $yday,$isdst) = localtime(time);
 our $datestamp = sprintf "%4d%02d%02d-%02d%02d%02d", $year+1900,$mon+1,$mday,$hour,$min,$sec;
