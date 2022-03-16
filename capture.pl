@@ -39,12 +39,6 @@ print "$pcap"."\n";
 print "$remov_old_file_cmd\n";
 
 `$remov_old_file_cmd`;
-if($hostname{$ext} =~ /Asterisk/){
-	`sudo mv -rv /var/spool/asterisk/monitor/*wav $log_dir`;
-	`sudo mv -rv /var/spool/asterisk/recording/ARI-Dial/* $log_dir`;
-}
-
-exit(0);
 `$pcap &`;
 `$cpu &`;
 `$mem &`;
