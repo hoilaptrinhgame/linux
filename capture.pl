@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+#this file is ultil for getting statistic log on tenant include kamailio, asterisk
 use Data::Dumper;
 use strict;
 
@@ -8,6 +9,7 @@ my %hostname = (
 "ip-172-31-45-123" => "Asterisk2",
 "ip-172-31-45-175" => "Asterisk3",
 );
+exit(0);
 my $sleep = 320 ;
 my $interval = 1;
 
