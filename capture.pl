@@ -37,7 +37,7 @@ my $pcap_pid;
 my $memory_pid;
 print "$pcap"."\n";
 print "$remov_old_file_cmd\n";
-
+exit(0);
 `$remov_old_file_cmd`;
 `$pcap &`;
 `$cpu &`;
