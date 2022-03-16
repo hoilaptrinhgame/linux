@@ -39,6 +39,11 @@ print "$pcap"."\n";
 print "$remov_old_file_cmd\n";
 
 `$remov_old_file_cmd`;
+if($hostname{$ext} =~ /Asterisk/){
+	`sudo mv -rv /var/spool/asterisk/monitor/*wav $log_dir`;
+	`sudo mv -rv /var/spool/asterisk/recording/ARI-Dial/* $log_dir`;
+}
+
 exit(0);
 `$pcap &`;
 `$cpu &`;
@@ -61,9 +66,13 @@ foreach (@output){
 }
 sumary_report("$log_dir/captured_cpu_$ext2","$log_dir/captured_mem_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_disk_$ext2");
 
-`sudo mv /var/spool/asterisk/monitor/*wav $log_dir/`;
-print 'Capture success!'."\n";
+if($hostname{$ext} =~ /Asterisk/){
+	`sudo mv -rv /var/spool/asterisk/monitor/*wav $log_dir`;
+	`sudo mv -rv /var/spool/asterisk/recording/ARI-Dial/* $log_dir`;
+}
 
+
+print 'Capture success!'."\n";
 
 sub sumary_report{
     my @files = (@_);
