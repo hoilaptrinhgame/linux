@@ -9,8 +9,9 @@ my %hostname = (
 "ip-172-31-45-123" => "Asterisk2",
 "ip-172-31-45-175" => "Asterisk3",
 );
-#my $log_dir = "/home/admin/statistic_log";
-my $log_dir = "/home/admin";
+
+my $log_dir = "/home/admin/statistic_log";
+#my $log_dir = "/home/admin";
 my $sleep = 320 ;
 my $interval = 1;
 
@@ -27,7 +28,7 @@ my $ext2 = $ext1.".txt";
 #clean old files
 my $remov_old_file_cmd = "rm $log_dir/captured_* $log_dir/*wav";
 
-my $pcap = "sudo tcpdump -G 300 -W 1 -i any -w $log_dir/captured_pkt_".$ext1.'.pcap > /dev/null';
+my $pcap = "sudo tcpdump -G 330 -W 1 -i any -w $log_dir/captured_pkt_".$ext1.'.pcap > /dev/null';
 my $cpu = "sar $interval -u > $log_dir/captured_cpu_".$ext2;
 my $mem = "sar $interval -r > $log_dir/captured_mem_".$ext2;
 my $network = "sar $interval -n DEV > $log_dir/captured_network_".$ext2;
