@@ -12,7 +12,7 @@ my %hostname = (
 
 my $log_dir = "/home/admin/statistic_log";
 #my $log_dir = "/home/admin";
-my $sleep = 10 ;
+my $sleep = 60 ;
 my $interval = 1;
 
 
@@ -46,17 +46,18 @@ print "$pcap"."\n";
 `$remov_old_file_cmd`;
 print "$remov_old_file_cmd\n";
 
+if($hostname{$ext} =~ /Asterisk/){
 `$as_console &`;
 `$ari_console &`;
+}
+
+
 
 `$pcap &`;
 `$cpu &`;
 `$mem &`;
 `$network &`;
 `$disk &`;
-# if($hostname{$ext} =~ /Asterisk/){
-# `$as_console &`;
-# }
 
 
 print "Capture Waitting..."."\n";
