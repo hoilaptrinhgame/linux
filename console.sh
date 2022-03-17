@@ -1,7 +1,7 @@
 #!/bin/bash
 declare -A host_console
 log_dir="/home/admin/statistic_log"
-mkdir ${log_dir}
+mkdir -p ${log_dir}
 host_console["ip-172-31-22-13"]="Kamailio"
 host_console["ip-172-31-38-182"]="Asterisk1"
 host_console["ip-172-31-45-123"]="Asterisk2"
