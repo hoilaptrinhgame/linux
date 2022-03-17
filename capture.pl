@@ -73,7 +73,7 @@ if($hostname{$ext} =~ /Asterisk/){
 	`$get_record_cmd `;
 	`$get_voice_reconition`;
 	#archive
-	`tar -czvf $arch_file $audio_dir\`;
+	`tar -czvf $arch_file $audio_dir/`;
 }
 
 
