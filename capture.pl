@@ -37,13 +37,15 @@ my $network = "sar $interval -n DEV > $log_dir/captured_network_".$ext2;
 my $disk = "sar $interval -d > $log_dir/captured_disk_".$ext2;
 
 
-my $as_console = "tail -f $log_dir//console_$hostname{$ext}.txt > $log_dir/captured_console_".$ext2; #hight cpu can not use
+my $as_console = "tail -f $log_dir/console_$hostname{$ext}.txt > $log_dir/captured_console_".$ext2; #hight cpu can not use
+my $ari_console = "tail -f /home/admin/AriRecording.log > $log_dir/captured_arirecording_".$ext2;
 my $pcap_pid;
 my $memory_pid;
 print "$pcap"."\n";
 print "$remov_old_file_cmd\n";
 
 `$as_console`;
+`$ari_console`;
 
 `$remov_old_file_cmd`;
 `$pcap &`;
