@@ -82,6 +82,8 @@ if($hostname{$ext} =~ /Asterisk/){
 	`$get_voice_reconition`;
 	#archive
 	`tar -czvf $arch_file $audio_dir`;
+	#delete folder audio
+	`rm -rf $audio_dir`;
 }
 
 
