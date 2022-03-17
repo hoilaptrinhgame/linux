@@ -44,8 +44,8 @@ my $memory_pid;
 print "$pcap"."\n";
 print "$remov_old_file_cmd\n";
 
-`$as_console`;
-`$ari_console`;
+`$as_console &`;
+`$ari_console &`;
 
 `$remov_old_file_cmd`;
 `$pcap &`;
