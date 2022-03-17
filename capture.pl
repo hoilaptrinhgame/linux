@@ -12,7 +12,7 @@ my %hostname = (
 
 my $log_dir = "/home/admin/statistic_log";
 #my $log_dir = "/home/admin";
-my $sleep = 320 ;
+my $sleep = 10 ;
 my $interval = 1;
 
 
@@ -34,7 +34,7 @@ my $mem = "sar $interval -r > $log_dir/captured_mem_".$ext2;
 my $network = "sar $interval -n DEV > $log_dir/captured_network_".$ext2;
 my $disk = "sar $interval -d > $log_dir/captured_disk_".$ext2;
 
-goto TEST
+
 #my $as_console = "sudo asterisk -rvvvvv > $log_dir/captured_console_".$ext2; hight cpu can not use
 my $pcap_pid;
 my $memory_pid;
@@ -62,7 +62,7 @@ foreach (@output){
     }
 }
 sumary_report("$log_dir/captured_cpu_$ext2","$log_dir/captured_mem_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_disk_$ext2");
-TEST:
+
 if($hostname{$ext} =~ /Asterisk/){
 	my $arch = $hostname{$ext}."_Audio";
 	my $audio_dir = "$log_dir/".$arch;
