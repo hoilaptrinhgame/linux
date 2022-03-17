@@ -42,12 +42,13 @@ my $ari_console = "tail -f /home/admin/AriRecording.log > $log_dir/captured_arir
 my $pcap_pid;
 my $memory_pid;
 print "$pcap"."\n";
+
+`$remov_old_file_cmd`;
 print "$remov_old_file_cmd\n";
 
 `$as_console &`;
 `$ari_console &`;
 
-`$remov_old_file_cmd`;
 `$pcap &`;
 `$cpu &`;
 `$mem &`;
