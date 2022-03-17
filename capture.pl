@@ -62,8 +62,12 @@ foreach (@output){
 sumary_report("$log_dir/captured_cpu_$ext2","$log_dir/captured_mem_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_disk_$ext2");
 
 if($hostname{$ext} =~ /Asterisk/){
-	`sudo mv -v /var/spool/asterisk/monitor/*wav $log_dir`;
-	`sudo mv -v /var/spool/asterisk/recording/ARI-Dial/* $log_dir`;
+	my $audio_dir = "$log_dir/".$hostname{$ext}."_Audio";
+	`mkdir -p $audio_dir`;
+	my $get_record_cmd = "sudo mv -v /var/spool/asterisk/monitor/*wav $audio_dir";
+	my $get_voice_reconition = "sudo mv -v /var/spool/asterisk/recording/ARI-Dial/* $audio_dir";
+	`$get_record_cmd `;
+	`$get_voice_reconition`;
 }
 
 
