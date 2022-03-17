@@ -12,7 +12,7 @@ my %hostname = (
 
 my $log_dir = "/home/admin/statistic_log";
 #my $log_dir = "/home/admin";
-my $sleep = 60 ;
+my $sleep = 330 ;
 my $interval = 1;
 
 
