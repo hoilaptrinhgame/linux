@@ -26,7 +26,9 @@ $ext =~ s/\n//;
 my $ext1 = $hostname{$ext}."_".$datestamp;
 my $ext2 = $ext1.".txt";
 #clean old files
-my $remov_old_file_cmd = "rm -rf $log_dir/*";
+my $backup_dir = "/home/admin/backup/backup_$ext1";
+`mkdir -p $backup_dir`;
+my $remov_old_file_cmd = "mv -v $log_dir/* $backup_dir";
 
 my $pcap = "sudo tcpdump -G 330 -W 1 -i any -w $log_dir/captured_pkt_".$ext1.'.pcap > /dev/null';
 my $cpu = "sar $interval -u > $log_dir/captured_cpu_".$ext2;
