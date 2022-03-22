@@ -46,14 +46,15 @@ print "$pcap"."\n";
 `$remov_old_file_cmd`;
 print "$remov_old_file_cmd\n";
 
-if($hostname{$ext} =~ /Asterisk/){
-`$as_console &`;
-`$ari_console &`;
-}
+# if($hostname{$ext} =~ /Asterisk/){
+# `$as_console &`;
+# `$ari_console &`;
+# }
 
 
 
-`$pcap &`;
+#`$pcap &`;
+
 `$cpu &`;
 `$mem &`;
 `$network &`;
@@ -71,20 +72,20 @@ foreach (@output){
 }
 sumary_report("$log_dir/captured_cpu_$ext2","$log_dir/captured_mem_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_disk_$ext2");
 
-if($hostname{$ext} =~ /Asterisk/){
-	my $arch = $hostname{$ext}."_Audio";
-	my $audio_dir = "$log_dir/".$arch;
-	my $arch_file="$audio_dir.tar.gz";
-	`mkdir -p $audio_dir`;
-	my $get_record_cmd = "sudo mv -v /var/spool/asterisk/monitor/*wav $audio_dir";
-	my $get_voice_reconition = "sudo mv -v /var/spool/asterisk/recording/ARI-Dial/* $audio_dir";
-	`$get_record_cmd `;
-	`$get_voice_reconition`;
-	#archive
-	`tar -czvf $arch_file $audio_dir`;
-	#delete folder audio
-	`rm -rf $audio_dir`;
-}
+# if($hostname{$ext} =~ /Asterisk/){
+	# my $arch = $hostname{$ext}."_Audio";
+	# my $audio_dir = "$log_dir/".$arch;
+	# my $arch_file="$audio_dir.tar.gz";
+	# `mkdir -p $audio_dir`;
+	# my $get_record_cmd = "sudo mv -v /var/spool/asterisk/monitor/*wav $audio_dir";
+	# my $get_voice_reconition = "sudo mv -v /var/spool/asterisk/recording/ARI-Dial/* $audio_dir";
+	# `$get_record_cmd `;
+	# `$get_voice_reconition`;
+	# #archive
+	# `tar -czvf $arch_file $audio_dir`;
+	# #delete folder audio
+	# `rm -rf $audio_dir`;
+# }
 
 
 print 'Capture success!'."\n";
