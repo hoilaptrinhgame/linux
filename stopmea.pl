@@ -34,7 +34,8 @@ sub stopAllCaptureProcess{
 sub checkAllResource{
 	my $subname = "exeCmd";
 	my $cmd = "sudo ls -ltr /var/spool/asterisk/monitor/";
-	exeCmd($cmd);
+	my @outputs = exeCmd($cmd);
+	Dumper(\@outputs);
 }
 checkAllResource();
 stopAllCaptureProcess();
