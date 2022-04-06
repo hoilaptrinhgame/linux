@@ -30,12 +30,19 @@ sub stopAllCaptureProcess{
 		}
 	}
 }
-
-sub checkAllResource{
-	my $subname = "exeCmd";
-	my $cmd = "sudo ls -ltr /var/spool/asterisk/monitor/";
+sub cleanAllResource{
+	my $subname = "cleanAllResource";
+	my $cmd = "sudo rm -r /var/spool/asterisk/monitor/*;sudo rm -r  /var/spool/asterisk/recording/ARI-Dial/*";
 	my (@outputs) = exeCmd($cmd);
 	print "[$module][$subname] $_", foreach @outputs;
 }
-checkAllResource();
+
+sub checkAllResource{
+	my $subname = "exeCmd";
+	my $cmd = "sudo ls -ltr /var/spool/asterisk/monitor/;sudo ls -ltr /var/spool/asterisk/recording/ARI-Dial/;pidstat";
+	my (@outputs) = exeCmd($cmd);
+	print "[$module][$subname] $_", foreach @outputs;
+}
+cleanAllResource();
 stopAllCaptureProcess();
+checkAllResource();

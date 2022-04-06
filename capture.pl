@@ -2,19 +2,56 @@
 #this file is ultil for getting statistic log on tenant include kamailio, asterisk
 use Data::Dumper;
 use strict;
+my @caputure_commands=();
 
+my $module = "STARTMEA";
+my $useami = 0;
+sub exeCmd{
+	my ($cmd) = @_;
+	my $subname = "exeCmd";
+	print "[$module][$subname] Executing: $cmd\n";
+    my @output = `$cmd`;
+    print @output;
+	return @output;
+}
+sub exeCmds{
+	my @cmds = @_;
+	my @outputs;
+	foreach (@cmds){
+		push (@outputs, exeCmd ($_));
+	}
+	return @outputs;
+}
+sub stopAllCaptureProcess{
+	my $subname = "stopAllCaptureProcess";
+	my $cmd = "sudo ps -ef | grep -E 'captured|sar|tail|pidstat'";
+		
+	print "[$module][$subname] stopAllCaptureProcess via $cmd\n";
+	my @outputs = exeCmd($cmd);
+	foreach (@outputs){
+		if($_ =~ /(root|admin)\s+(\d+)/){
+			exeCmd("sudo kill $2");
+		}
+	}
+}
+sub checkAllResource{
+	my $subname = "checkAllResource";
+	my $cmd = "sudo ls -ltr /var/spool/asterisk/monitor/;sudo ls -ltr /var/spool/asterisk/recording/ARI-Dial/;pidstat";
+	my (@outputs) = exeCmd($cmd);
+	print "[$module][$subname] $_", foreach @outputs;
+}
 my %hostname = (
-"ip-172-31-22-13" => "Kamailio",
-"ip-172-31-38-182" => "Asterisk1",
-"ip-172-31-45-123" => "Asterisk2",
-"ip-172-31-45-175" => "Asterisk3",
+    "ip-172-31-22-13" => "Kamailio",
+    "ip-172-31-38-182" => "Asterisk1",
+    "ip-172-31-45-123" => "Asterisk2",
+    "ip-172-31-45-175" => "Asterisk3",
 );
 
 my $log_dir = "/home/admin/statistic_log";
 #my $log_dir = "/home/admin";
-my $sleep = 330 ;
+my $sleep = 30 ; #should 310
 my $interval = 1;
-
+my $interval_stat =10;
 
 my $captured_sumary_report="$log_dir/captured_sumary";
 
@@ -25,51 +62,73 @@ my $ext = `cat /proc/sys/kernel/hostname`;
 $ext =~ s/\n//;
 my $ext1 = $hostname{$ext}."_".$datestamp;
 my $ext2 = $ext1.".txt";
-#clean old files
-my $backup_dir = "/home/admin/backup/backup_$ext1";
-`mkdir -p $backup_dir`;
-my $remov_old_file_cmd = "mv -v $log_dir/* $backup_dir";
 
-my $pcap = "sudo tcpdump -G 330 -W 1 -i any -w $log_dir/captured_pkt_".$ext1.'.pcap > /dev/null';
+
+my $pcap = "sudo tcpdump -G 310 -W 1 -i any -w $log_dir/captured_pkt_".$ext1.'.pcap > /dev/null';
 my $cpu = "sar $interval -u > $log_dir/captured_cpu_".$ext2;
 my $mem = "sar $interval -r > $log_dir/captured_mem_".$ext2;
 my $network = "sar $interval -n DEV > $log_dir/captured_network_".$ext2;
 my $disk = "sar $interval -d > $log_dir/captured_disk_".$ext2;
 
+my $asterisk_cpu =  "pidstat $interval_stat -u -G asterisk > $log_dir/asterisk_captured_cpu_".$ext2;
+my $asterisk_mem =  "pidstat $interval_stat -r -G asterisk > $log_dir/asterisk_captured_mem_".$ext2;
+my $asterisk_disk = "pidstat $interval_stat -d -G asterisk > $log_dir/asterisk_captured_disk_".$ext2;
+
+my $nodejs_cpu =  "pidstat $interval_stat -u -G nodejs > $log_dir/nodejs_captured_cpu_".$ext2;
+my $nodejs_mem =  "pidstat $interval_stat -r -G nodejs > $log_dir/nodejs_captured_mem_".$ext2;
+my $nodejs_disk = "pidstat $interval_stat -d -G nodejs > $log_dir/nodejs_captured_disk_".$ext2;
 
 my $as_console = "tail -f /home/admin/console_$hostname{$ext}.txt > $log_dir/captured_console_".$ext2; #hight cpu can not use
 my $ari_console = "tail -f /home/admin/AriRecording.log > $log_dir/captured_arirecording_".$ext2;
 my $pcap_pid;
 my $memory_pid;
-print "$pcap"."\n";
 
+#check before test
+checkAllResource();
+#backup old files to /home/admin/backup/
+my $backup_dir = "/home/admin/backup/backup_$ext1";
+`mkdir -p $backup_dir`;
+my $remov_old_file_cmd = "mv -v $log_dir/* $backup_dir";
 `$remov_old_file_cmd`;
 print "$remov_old_file_cmd\n";
 
 if($hostname{$ext} =~ /Asterisk/){
-`$as_console &`;
-`$ari_console &`;
+    #if it's asterisk we should check ARI and Console
+    push (@caputure_commands,"$as_console &");
+    push (@caputure_commands,"$ari_console &") if $useami;
 }
 
 
+exeCmds (
+    @caputure_commands,
+    "$pcap &",
+    "$cpu &",
+    "$mem &",
+    "$network &",
+    "$disk &",
 
-`$pcap &`;
-`$cpu &`;
-`$mem &`;
-`$network &`;
-`$disk &`;
+    "$asterisk_cpu &",
+    "$asterisk_mem &",
+    "$asterisk_disk &"
+
+);
+
+if($useami){
+    exeCmds (
+    "$nodejs_cpu",
+    "$nodejs_mem",
+    "$nodejs_disk"
+    );
+}
 
 
-print "Capture Waitting..."."\n";
+print "Capture Waitting $sleep seconds..."."\n";
 sleep($sleep);
-my @output = `sudo ps -ef | grep -E 'capture|sar|tail'`;
-foreach (@output){
-    if($_ =~ /root\s+(\d+)/){
-	   print "sudo kill $1\n";
-       `sudo kill $1`;
-        
-    }
-}
+
+#stop all capture process
+stopAllCaptureProcess();
+
+#sumary all report
 sumary_report("$log_dir/captured_cpu_$ext2","$log_dir/captured_mem_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_disk_$ext2");
 
 if($hostname{$ext} =~ /Asterisk/){
@@ -78,15 +137,21 @@ if($hostname{$ext} =~ /Asterisk/){
 	my $arch_file="$audio_dir.tar.gz";
 	`mkdir -p $audio_dir`;
 	my $get_record_cmd = "sudo mv -v /var/spool/asterisk/monitor/*wav $audio_dir";
-	my $get_voice_reconition = "sudo mv -v /var/spool/asterisk/recording/ARI-Dial/* $audio_dir";
-	`$get_record_cmd `;
-	`$get_voice_reconition`;
-	#archive
-	`tar -czvf $arch_file $audio_dir`;
-	#delete folder audio
-	`rm -rf $audio_dir`;
+    if($useami){
+        my $get_voice_reconition = "sudo mv -v /var/spool/asterisk/recording/ARI-Dial/* $audio_dir";
+        `$get_voice_reconition`;
+    }
+	
+    exeCmds (
+      "$get_record_cmd",
+      "tar -czvf $arch_file $audio_dir",
+      "rm -rf $audio_dir"
+    );
 }
-
+#check after test
+checkAllResource();
+my $check_all_process = "pidstat > $log_dir/check_all_process".$ext2;
+exeCmds($check_all_process);
 
 print 'Capture success!'."\n";
 
