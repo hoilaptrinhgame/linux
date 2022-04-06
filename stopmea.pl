@@ -20,10 +20,10 @@ sub exeCmds{
 }
 sub stopAllCaptureProcess{
 	my $subname = "exeCmd";
-	my $cmd = "sudo ps -ef | grep -E capture|sar|tail";
+	my $cmd = "sudo ps -ef | grep -E 'capture|sar|tail'";
 		
 	print "[$module][$subname] stopAllCaptureProcess via $cmd\n";
-	my @outputs = exeCmds($cmd);
+	my @outputs = exeCmd($cmd);
 	foreach (@outputs){
 		if($_ =~ /(root|admin)\s+(\d+)/){
 			exeCmd("sudo kill $2");
@@ -34,8 +34,8 @@ sub stopAllCaptureProcess{
 sub checkAllResource{
 	my $subname = "exeCmd";
 	my $cmd = "sudo ls -ltr /var/spool/asterisk/monitor/";
-	my @outputs = exeCmd($cmd);
-	Dumper(\@outputs);
+	my (@outputs) = exeCmd($cmd);
+	print "[$module][$subname] $_", foreach @outputs;
 }
 checkAllResource();
 stopAllCaptureProcess();
