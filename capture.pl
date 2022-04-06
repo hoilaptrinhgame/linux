@@ -78,6 +78,10 @@ my $nodejs_cpu =  "pidstat $interval_stat -u -G nodejs > $log_dir/nodejs_capture
 my $nodejs_mem =  "pidstat $interval_stat -r -G nodejs > $log_dir/nodejs_captured_mem_".$ext2;
 my $nodejs_disk = "pidstat $interval_stat -d -G nodejs > $log_dir/nodejs_captured_disk_".$ext2;
 
+my $kamailio_cpu =  "pidstat $interval_stat -u -G kamailio > $log_dir/kamailio_captured_cpu_".$ext2;
+my $kamailio_mem =  "pidstat $interval_stat -r -G kamailio > $log_dir/kamailio_captured_mem_".$ext2;
+my $kamailio_disk = "pidstat $interval_stat -d -G kamailio > $log_dir/kamailio_captured_disk_".$ext2;
+
 my $as_console = "tail -f /home/admin/console_$hostname{$ext}.txt > $log_dir/captured_console_".$ext2; #hight cpu can not use
 my $ari_console = "tail -f /home/admin/AriRecording.log > $log_dir/captured_arirecording_".$ext2;
 my $pcap_pid;
@@ -122,6 +126,15 @@ if($hostname{$ext} =~ /Asterisk/){
         "$nodejs_disk &"
         );
     }
+}
+
+if($hostname{$ext} =~ /Kamailio/){
+    exeCmds (
+        "$kamailio_cpu &",
+        "$kamailio_mem &",
+        "$kamailio_disk &"
+    );
+
 }
 
 
