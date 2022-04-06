@@ -106,19 +106,22 @@ exeCmds (
     "$mem &",
     "$network &",
     "$disk &",
-
-    "$asterisk_cpu &",
-    "$asterisk_mem &",
-    "$asterisk_disk &"
-
 );
 
-if($useami){
+if($hostname{$ext} =~ /Asterisk/){
     exeCmds (
-    "$nodejs_cpu",
-    "$nodejs_mem",
-    "$nodejs_disk"
+        "$asterisk_cpu &",
+        "$asterisk_mem &",
+        "$asterisk_disk &"
     );
+
+    if($useami){   
+        exeCmds (
+        "$nodejs_cpu &",
+        "$nodejs_mem &",
+        "$nodejs_disk &"
+        );
+    }
 }
 
 
