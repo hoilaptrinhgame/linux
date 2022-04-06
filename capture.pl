@@ -49,7 +49,7 @@ my %hostname = (
 
 my $log_dir = "/home/admin/statistic_log";
 #my $log_dir = "/home/admin";
-my $sleep = 310 ; #should 310
+my $sleep = 30 ; #should 310
 my $interval = 1;
 my $interval_stat =10;
 
