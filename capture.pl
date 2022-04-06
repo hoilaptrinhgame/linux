@@ -62,11 +62,12 @@ if($hostname{$ext} =~ /Asterisk/){
 
 print "Capture Waitting..."."\n";
 sleep($sleep);
-my @output = `sudo ps -ef | grep -E captured`;
+my @output = `sudo ps -ef | grep -E 'capture|sar|tail'`;
 foreach (@output){
     if($_ =~ /root\s+(\d+)/){
+	   print "sudo kill $1\n";
        `sudo kill $1`;
-        print "sudo kill $1\n";
+        
     }
 }
 sumary_report("$log_dir/captured_cpu_$ext2","$log_dir/captured_mem_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_network_$ext2","$log_dir/captured_disk_$ext2");
