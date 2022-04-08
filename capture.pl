@@ -64,7 +64,7 @@ my $ext1 = $hostname{$ext}."_".$datestamp;
 my $ext2 = $ext1.".txt";
 
 
-my $pcap = "sudo tcpdump -G 330 -W 1 -i any -w $log_dir/captured_pkt_".$ext1.'.pcap > /dev/null';
+my $pcap = "sudo tcpdump udp -G 330 -W 1 -i any -w $log_dir/captured_pkt_".$ext1.'.pcap > /dev/null';
 my $cpu = "sar $interval -u > $log_dir/captured_cpu_".$ext2;
 my $mem = "sar $interval -r > $log_dir/captured_mem_".$ext2;
 my $network = "sar $interval -n DEV > $log_dir/captured_network_".$ext2;
