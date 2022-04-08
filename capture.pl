@@ -5,7 +5,7 @@ use strict;
 my @caputure_commands=();
 
 my $module = "STARTMEA";
-my $useami = 0;
+my $useami = 1;
 sub exeCmd{
 	my ($cmd) = @_;
 	my $subname = "exeCmd";
@@ -87,6 +87,7 @@ my $ari_console = "tail -f /home/admin/AriRecording.log > $log_dir/captured_arir
 my $pcap_pid;
 my $memory_pid;
 
+print "Colleting with voice reconigtion \n" if $useami ;
 #check before test
 checkAllResource();
 #backup old files to /home/admin/backup/
