@@ -20,7 +20,7 @@ sub exeCmds{
 }
 sub stopAllCaptureProcess{
 	my $subname = "exeCmd";
-	my $cmd = "sudo ps -ef | grep -E 'capture|sar|tail'";
+	my $cmd = "sudo ps -ef | grep -E 'capture|sar|tail|pidstat'";
 		
 	print "[$module][$subname] stopAllCaptureProcess via $cmd\n";
 	my @outputs = exeCmd($cmd);
