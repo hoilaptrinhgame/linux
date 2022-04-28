@@ -5,7 +5,7 @@ use strict;
 my @caputure_commands=();
 
 my $module = "STARTMEA";
-my $useami = 1;
+my $useami = 0;
 sub exeCmd{
 	my ($cmd) = @_;
 	my $subname = "exeCmd";
@@ -70,15 +70,15 @@ my $mem = "sar $interval -r > $log_dir/captured_mem_".$ext2;
 my $network = "sar $interval -n DEV > $log_dir/captured_network_".$ext2;
 my $disk = "sar $interval -d > $log_dir/captured_disk_".$ext2;
 
-my $asterisk_cpu =  "pidstat $interval_stat -u -G asterisk > $log_dir/asterisk_captured_cpu_".$ext2;
+my $asterisk_cpu =  "pidstat -t $interval_stat -u -G asterisk > $log_dir/asterisk_captured_cpu_".$ext2;
 my $asterisk_mem =  "pidstat $interval_stat -r -G asterisk > $log_dir/asterisk_captured_mem_".$ext2;
 my $asterisk_disk = "pidstat $interval_stat -d -G asterisk > $log_dir/asterisk_captured_disk_".$ext2;
 
-my $nodejs_cpu =  "pidstat $interval_stat -u -G nodejs > $log_dir/nodejs_captured_cpu_".$ext2;
+my $nodejs_cpu =  "pidstat -t $interval_stat -u -G nodejs > $log_dir/nodejs_captured_cpu_".$ext2;
 my $nodejs_mem =  "pidstat $interval_stat -r -G nodejs > $log_dir/nodejs_captured_mem_".$ext2;
 my $nodejs_disk = "pidstat $interval_stat -d -G nodejs > $log_dir/nodejs_captured_disk_".$ext2;
 
-my $kamailio_cpu =  "pidstat $interval_stat -u -G kamailio > $log_dir/kamailio_captured_cpu_".$ext2;
+my $kamailio_cpu =  "pidstat -t $interval_stat -u -G kamailio > $log_dir/kamailio_captured_cpu_".$ext2;
 my $kamailio_mem =  "pidstat $interval_stat -r -G kamailio > $log_dir/kamailio_captured_mem_".$ext2;
 my $kamailio_disk = "pidstat $interval_stat -d -G kamailio > $log_dir/kamailio_captured_disk_".$ext2;
 
