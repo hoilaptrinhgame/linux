@@ -5,7 +5,7 @@ use strict;
 my @caputure_commands=();
 
 my $module = "STARTMEA";
-my $useami = 0;
+my $useami = 1;
 sub exeCmd{
 	my ($cmd) = @_;
 	my $subname = "exeCmd";
